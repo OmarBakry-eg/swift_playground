@@ -1,103 +1,133 @@
+// classes called by reference look for game example
+// let objs can modifiy it's property, look for carDev obj and its class
 
-// In struct you don't need to create an init constructor at all
-// but if you need to create a custom init and keep the origin init as it you may have to create them both.
-// Sructs are called by value. ( See objThree and objFour )
-
-struct MyStruct
-{
-    var name,age,phone:String
-     
-    private var isAvailabe :Bool = false // private field
-    
-    var computedStaute : String { //computed
-        if age == "23" {
-            return "Good Age"
-        }else{
-            return "Maybe Higher or less than normal age"
-        }
-    }
-    
-    var getBoolStatue : String { // getter and setter
-        get{
-            isAvailabe ? "YASS Bool is true" : "Noop its false"
-        }
-        
-        set{
-            isAvailabe = Bool.random()
-        }
-    }
-    
-    init(name:String,age:String,phone:String) { // Origin iniit
-        self.name = name;
-        self.age=age
-        self.phone=phone
-    }
-    init(namePlusOmar name:String,age:String,phone:String) { // Custom init
-        self.name = "\(name) plus omar";
-        self.age=age
-        self.phone=phone
-    }
-    
-    func printData () -> Void {
-       print("My name is \(name), My age is \(age) and My phone \(phone)")
-    }
-    
-    mutating func changeAge(age:String){
-        //if you wanna change any struct property in method you've to mutate it to be mutable because struct members always immutable
-        self.age = age
-    }
-    
-}
-let objOne = MyStruct(name: "Omar", age: "23", phone: "01212121212")
-var objTwo = MyStruct.init(namePlusOmar: "Ahemd", age: "23", phone:"010101010")
-//objTwo must be a var not let like age, as long as you use mutating func your obj must be mutable also.
-objOne.printData()
-print(objOne.computedStaute)
-objTwo.changeAge(age: "12")
-objTwo.printData()
-print(objTwo.computedStaute)
-
-var objThree = MyStruct(name: "ObjThree", age: "23", phone: "01212121212")
-//objThree must be a var not let like name, as long as you wanna set new value to any attrbuite you've to define your obj as var .
-let objFour = objThree
-//When you equalizing two obj from ( STRUCT ) you actually create new obj that holds the same data from the equalizing one, so if you change any property of any one it will change on it just. see below .
-
-objThree.name = "BAKRY"
-objThree.printData() // name is BAKRY
-objFour.printData() // name is ObjThree
-
-
-struct App {
-    // property observer
-    var contacts = [String]() {
-        willSet{
-            print("Current val is : \(contacts)")
-            print("New val is : \(newValue)") // newValue supported by willSet Observer
-        }
-        
-        didSet{
-            print("There're now \(contacts.count) contacts")
-            print("Old val was : \(oldValue)") // oldValue supported by didSet Observer
-        }
-        
+class Game {
+    var score : Int = 0
+    func  printScore()  {
+     print(score)
     }
 }
 
-var app = App()
+var newGame = Game()
+var mainGame = newGame
+newGame.score = 10
+mainGame.score = 30
+newGame.printScore() //30
+mainGame.printScore()//30
+// You shared same data from the class and if one change the rest of objs that share same data should be change.
+print("----------------------------------")
+// Inhertience without init
+class Emp {
+    let hours:Int
+    init(hours : Int) {
+        self.hours = hours
+    }
+    func printSummary(_ workType:String){
+        print("I'm a \(workType), I work \(hours) hours per day")
+    }
+}
 
-app.contacts.append("Omar") 
-app.contacts.append("Ali")
-app.contacts.append("Ahmed")
-//Current val is : []
-//New val is : ["Omar"]
-//There're now 1 contacts
-//Old val was : []
-//Current val is : ["Omar"]
-//New val is : ["Omar", "Ali"]
-//There're now 2 contacts
-//Old val was : ["Omar"]
-//Current val is : ["Omar", "Ali"]
-//New val is : ["Omar", "Ali", "Ahmed"]
-//There're now 3 contacts
-//Old val was : ["Omar", "Ali"]
+class Developer : Emp {}
 
+class Worker : Emp {}
+
+let dev = Developer(hours: 8)
+let worker = Worker(hours: 5)
+dev.printSummary("dev")
+worker.printSummary("worker")
+
+print("----------------------------------")
+
+// Inhertience with init
+
+class Vehicle{
+    let isElectric : Bool
+    init(isElectric : Bool) {
+        self.isElectric = isElectric
+    }
+}
+class CarForDev : Vehicle {
+    var isConvertible : Bool // let objs can modifiy it's property
+    init(isConvertible: Bool, isElectric:Bool) {
+        self.isConvertible = isConvertible
+        super.init(isElectric: isElectric)
+    }
+}
+class CarForWorker : Vehicle {
+    let isConvertible : Bool = false
+}
+
+let carDev = CarForDev(isConvertible: true, isElectric: true)
+carDev.isConvertible = false //let objs can modifiy it's property
+let carWorker = CarForWorker(isElectric: true)
+
+//---------------------------
+
+// Copy Classes
+
+class User {
+    var username:String = "Omar"
+    func copy() -> User {
+        let user = User()
+        user.username = username
+        return user
+    }
+}
+
+var user1 = User()
+var user2 = user1.copy()
+user2.username = "Bakry"
+print(user1.username)
+print(user2.username)
+
+print("----------------------------------")
+
+// deinit
+
+class DeInitTest{
+    let id : Int
+    init(id:Int) {
+        self.id = id
+        print("User \(id) : I'm alive")
+    }
+    
+    deinit {
+        print("User \(id) : I'm dead")
+    }
+}
+
+for i in 1...3 {
+    let user = DeInitTest(id: i)
+    print("User \(user.id) : I'm in control")
+//    User 1 : I'm alive
+//    User 1 : I'm in control
+//    User 1 : I'm dead
+//    User 2 : I'm alive
+//    User 2 : I'm in control
+//    User 2 : I'm dead
+//    User 3 : I'm alive
+//    User 3 : I'm in control
+//    User 3 : I'm dead
+}
+print("----------------------------------")
+var users :[DeInitTest] = [DeInitTest]()
+for i in 1...3{
+   
+    let user = DeInitTest(id: i)
+    print("User \(user.id) : I'm in control")
+    users.append(user)
+}
+
+users.removeAll()
+//User 1 : I'm alive
+//User 1 : I'm in control
+//User 2 : I'm alive
+//User 2 : I'm in control
+//User 3 : I'm alive
+//User 3 : I'm in control
+//User 1 : I'm dead
+//User 2 : I'm dead
+//User 3 : I'm dead
+print("Array cleared !")
+//Users don't destroy immediatly because they're stored in array
+print("----------------------------------")
