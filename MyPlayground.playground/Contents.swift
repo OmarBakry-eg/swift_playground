@@ -261,7 +261,22 @@ class LinkedList {
         }
     }
     
+    func printReverse(){
+        var current = head
+        var prev : Node?
+        var temp : Node?
+        while current != nil {
+            temp = current?.next
+            current?.next = prev
+            prev = current
+            current = temp
+        }
+        while prev != nil {
+            print(prev?.value ?? "Nothing")
+            prev = prev?.next
+        }
 
+    }
     
 }
 
@@ -275,27 +290,28 @@ let n4 = Node(value: 4)
 let n5 = Node(value: 5)
 let n6 = Node(value: 6)
 
-let qu = Queue(head: n1)
-qu.push(n2)
-qu.push(n5)
-qu.pop()
-qu.printVal()
-print("------------")
-print(qu.peek()!.value)
-print("------------")
-qu.enqueu(n3)
-qu.printVal()
-print("------------")
-qu.dequeu()
-qu.printVal()
+//let qu = Queue(head: n1)
+//qu.push(n2)
+//qu.push(n5)
+//qu.pop()
+//qu.printVal()
+//print("------------")
+//print(qu.peek()!.value)
+//print("------------")
+//qu.enqueu(n3)
+//qu.printVal()
+//print("------------")
+//qu.dequeu()
+//qu.printVal()
 // Start setting up a LinkedList
-//let ll = LinkedList(head: n1)
-//ll.append(n2)
-//ll.append(n3)
-//ll.insertAtFirst(n5)
-//ll.inserAtLast(n6)
-//ll.printVal()
-//print("---------------------")
+let ll = LinkedList(head: n1)
+ll.append(n2)
+ll.append(n3)
+ll.insertAtFirst(n5)
+ll.inserAtLast(n6)
+ll.printVal()
+print("---------------------")
+ll.printReverse()
 //let stack = Stack(top: n1)
 //stack.push(n4)
 //stack.push(n5)
