@@ -1,3 +1,118 @@
+class QueueWithoutLinkedList {
+    var storage : [Int]
+    init(head : Int){
+        self.storage = [head]
+    }
+    // add the element to the queue
+       func enqueue(_ element: Int) {
+           storage.append(element)
+       }
+       
+       // return the next element to be dequeued from the queue
+       // if the queue is empty, return nil
+       func peek() -> Int? {
+           return storage.first
+       }
+       
+       // remove and return the next element to be dequeued
+       func dequeue() -> Int? {
+        return storage.removeFirst()
+       }
+}
+
+
+class Queue {
+    var head : Node?
+    init(head : Node?) {
+        self.head = head
+    }
+    func push (_ node : Node?){ // insert at first
+        let newNode = node
+        let current = head
+        if current != nil {
+            newNode?.next = current
+            head = newNode
+        } else {
+            head = newNode
+        }
+    }
+    
+    func pop() -> Node? { // remove last
+        var current = head
+        var prev : Node?
+        while current?.next != nil {
+            prev = current
+            current = current?.next
+        }
+        prev?.next = nil
+        return current
+    }
+    
+    func peek () -> Node? { // return head
+        return head
+    }
+    func enqueu(_ node : Node?) { // insert at tail
+        let newNode = node
+        var current = head
+        while current?.next != nil {
+            current = current?.next
+        }
+        current?.next = newNode
+        newNode?.next = nil
+    }
+    
+    func dequeu () -> Node?{ // remove head
+        let current = head
+        head = head?.next
+        current?.next = nil
+        return current
+    }
+    
+    func printVal(){
+        var current = head
+        while current != nil {
+            print(current?.value ?? "Nothing")
+            current = current?.next
+        }
+    }
+}
+
+
+class Stack {
+    var head : Node?
+    init(top: Node?) {
+        self.head = top
+    }
+    
+    func push (_ node : Node?){ // insert at first
+        let newNode = node
+        let current = head
+        
+        if current != nil {
+            newNode?.next = current
+            head = newNode
+        } else {
+            head = newNode
+        }
+    }
+
+    func pop () -> Node? { // remove first
+        let current = head
+        head = current?.next
+        current?.next = nil
+        return current
+    }
+    func printVal(){
+        var current = head
+        while current != nil {
+            print(current?.value ?? "Nothing")
+            current = current?.next
+        }
+    }
+}
+
+
+
 
 class Node {
     var value: Int
@@ -159,20 +274,45 @@ let n3 = Node(value: 3)
 let n4 = Node(value: 4)
 let n5 = Node(value: 5)
 let n6 = Node(value: 6)
+
+let qu = Queue(head: n1)
+qu.push(n2)
+qu.push(n5)
+qu.pop()
+qu.printVal()
+print("------------")
+print(qu.peek()!.value)
+print("------------")
+qu.enqueu(n3)
+qu.printVal()
+print("------------")
+qu.dequeu()
+qu.printVal()
 // Start setting up a LinkedList
-let ll = LinkedList(head: n1)
-ll.append(n2)
-ll.append(n3)
-ll.insertAtFirst(n5)
-ll.inserAtLast(n6)
-ll.printVal()
-print("-------------------")
-ll.deleteLast()
-ll.deleteFirst()
-ll.printVal()
-print("-------------------")
-ll.deleteNode(withValue: 1)
-ll.printVal()
+//let ll = LinkedList(head: n1)
+//ll.append(n2)
+//ll.append(n3)
+//ll.insertAtFirst(n5)
+//ll.inserAtLast(n6)
+//ll.printVal()
+//print("---------------------")
+//let stack = Stack(top: n1)
+//stack.push(n4)
+//stack.push(n5)
+//stack.printVal()
+//print("---------------------")
+//print(stack.pop()!.value)
+//print(stack.pop()!.value)
+//print("---------------------")
+//stack.printVal()
+//ll.printVal()
+//print("-------------------")
+//ll.deleteLast()
+//ll.deleteFirst()
+//ll.printVal()
+//print("-------------------")
+//ll.deleteNode(withValue: 1)
+//ll.printVal()
 // Test getNode(atPosition:)
 //print(ll.head?.next?.next?.value ?? "nothing") // Should print 3
 //print(ll.getNode(atPosition: 3)?.value ?? "nothig")
