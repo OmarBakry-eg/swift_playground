@@ -1,31 +1,19 @@
 
 
-var hunderd = [Int]()
-for i in 1...100 {
-    hunderd.append(i)
-}
-
-
-func binarySearch(searchValue: Int, searchInArray : [Int]) -> Bool {
-    var leftIndex = 0
-    var rightIndex = searchInArray.count - 1
-    
-    while leftIndex <= rightIndex {
-        let middelIndex = (leftIndex + rightIndex) / 2
-        let middelValue = searchInArray[middelIndex]
-        print("Middel is : \(middelValue), LeftIndex : \(leftIndex), RightIndex : \(rightIndex)\n LeftVAL : \(searchInArray[leftIndex]) , RightVAL : \(searchInArray[rightIndex])")
-        
-        if middelValue == searchValue {
-            return true
-        }
-        if searchValue > middelValue { // moving to right side ```bigger side```
-            leftIndex = middelIndex + 1
-        }
-        if searchValue < middelValue { // moving to left side ```Smaller side```
-            rightIndex =  middelIndex - 1
+func bubbleSort(arr:[Int]) -> [Int] {
+    var array = arr
+    for _ in 0..<array.count {
+        for j in 1..<array.count {
+            if array[j] < array[j-1]{
+               let temp = array[j-1]
+                array[j-1] = array[j]
+                array[j] = temp
+            }
         }
     }
-    return false
+    return array
 }
 
-print(binarySearch(searchValue: 12, searchInArray: hunderd))
+print(bubbleSort(arr: [4,7,8,2,1,5,8,9,0]))
+
+// O(n^2)
