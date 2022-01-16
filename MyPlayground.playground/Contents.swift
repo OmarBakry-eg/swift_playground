@@ -56,6 +56,68 @@ class BST {
           }
       }
     }
+    // [in , pre , post]
+    func printTreeDependentOnOrder(_ order: String,root : Node?) -> Void {
+        switch order {
+        case "post" :
+            return postOrder(root)
+        case "pre":
+            return preOrder(root)
+        default:
+           return inOrder(root)
+        }
+    }
+    
+    private func postOrder(_ root: Node?) {
+        guard root != nil else {
+            return
+        }
+        postOrder(root?.left)
+        postOrder(root?.right)
+        print(root?.value ?? "No data")
+    }
+    private func preOrder(_ root: Node?) {
+        guard root != nil else {
+            return
+        }
+        print(root?.value ?? "No data")
+        preOrder(root?.left)
+        preOrder(root?.right)
+    }
+    private func inOrder(_ root: Node?) {
+        guard root != nil else {
+            return
+        }
+        inOrder(root?.left)
+        print(root?.value ?? "No data")
+        inOrder(root?.right)
+    }
+     func minimum() -> Int? {
+      var current : Node? = root
+         while current?.left != nil {
+             current = current?.left
+         }
+         return current?.value
+    }
+
+    /*
+      Returns the rightmost descendent. O(n) time.
+    */
+     func maximum() -> Int? {
+         var current : Node? = root
+        while current?.right != nil {
+            current = current?.right
+        }
+        return current?.value
+    }
+    
+    func maxDepth(root : Node?) -> Int {
+         if root == nil {
+          return 0
+        } else {
+            return 1 + max(maxDepth(root: root?.left) , maxDepth(root: root?.right))
+        }
+      }
 }
 
 // Test cases
@@ -67,7 +129,13 @@ tree.insert(2)
 tree.insert(1)
 tree.insert(3)
 tree.insert(5)
+tree.insert(7)
+tree.insert(0)
 
 // Check search
-print(tree.search(4)) // Should be true
-print(tree.search(6)) // Should be false
+//print(tree.search(4)) // Should be true
+//print(tree.search(6)) // Should be false
+
+//tree.printTreeDependentOnOrder("post", root: tree.root)
+//print(tree.minimum() ?? 11)
+print(tree.maxDepth(root: tree.root))
